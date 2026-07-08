@@ -1,0 +1,9 @@
+[
+  {
+    "SourceBranch": "wip/sn@publish",
+    "TargetBranch": "develop",
+    "CreateMergeRequest": false,
+    "CreatedAt": "2026-07-08T15:04:47.9953313+02:00",
+    "Author": "Samuel Nussbaum"
+  }
+]
