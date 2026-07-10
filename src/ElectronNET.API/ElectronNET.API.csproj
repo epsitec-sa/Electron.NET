@@ -14,6 +14,7 @@
     <Description>$(DescriptionFirstPart) This package contains the API to access the "native" electron API.</Description>
     <RootNamespace>ElectronNET</RootNamespace>
     <NoWarn>1701;1702;4014;CS4014;CA1416;CS1591</NoWarn>
+    <ManagePackageVersionsCentrally>False</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="ElectronNET.API.csproj.DotSettings" />

@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <ElectronNetDevMode>true</ElectronNetDevMode>
+    <ManagePackageVersionsCentrally>False</ManagePackageVersionsCentrally>
   </PropertyGroup>
 
   <Import Project="..\ElectronNET\build\ElectronNET.Core.props" Condition="$(ElectronNetDevMode)" />
