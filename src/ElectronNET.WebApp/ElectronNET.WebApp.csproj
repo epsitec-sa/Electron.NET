@@ -2,7 +2,8 @@
 
   <PropertyGroup>
     <!-- When this is enabled, the project will be switched from nuget packages to consuming the ElectronNet orchestration directly -->
-    <ElectronNetDevMode>true</ElectronNetDevMode>
+    <ElectronNetDevMode>true</ElectronNetDevMode>    
+    <ManagePackageVersionsCentrally>False</ManagePackageVersionsCentrally>
   </PropertyGroup>
 
   <Import Project="..\ElectronNET\build\ElectronNET.Core.props" Condition="$(ElectronNetDevMode)" />
