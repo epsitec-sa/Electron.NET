@@ -1,0 +1,9 @@
+[
+  {
+    "SourceBranch": "wip/rv@electron-build",
+    "TargetBranch": "wip/sn@publish",
+    "CreateMergeRequest": false,
+    "CreatedAt": "2026-07-26T13:02:15.2114121+02:00",
+    "Author": "Roger Vuistiner"
+  }
+]
