@@ -18,6 +18,7 @@
     <FileVersion>$(Version)</FileVersion>
     <Version>$(Version)$(VersionPostFix)</Version>
     <InformationalVersion>$(Version)</InformationalVersion>
+    <ManagePackageVersionsCentrally>False</ManagePackageVersionsCentrally>
   </PropertyGroup>
 </Project>
 
