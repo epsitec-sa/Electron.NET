@@ -2,8 +2,8 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup Label="ElectronNetCommon">
-    <ElectronVersion>30.4.0</ElectronVersion>
-    <ElectronBuilderVersion>26.0</ElectronBuilderVersion>
+    <ElectronVersion>42.3.3</ElectronVersion>
+    <ElectronBuilderVersion>26.15.7</ElectronBuilderVersion>
     <!-- Default to the host SDK's RID (e.g. linux-x64, win-x64, osx-arm64) when none is passed,
          so `dotnet build/publish` without -r targets the current OS.
          RuntimeInformation.RuntimeIdentifier only exists on .NET 5+, so it's only safe to call

@@ -11,6 +11,9 @@
   <UsingTask TaskName="ElectronNET.Build.RemoveEnvironmentVariables"
              AssemblyFile="$(MSBuildThisFileDirectory)ElectronNET.Build.dll" />
 
+  <UsingTask TaskName="ElectronNET.Build.RemoveJsonPropertyTask"
+             AssemblyFile="$(MSBuildThisFileDirectory)ElectronNET.Build.dll" />
+
   <!-- Adjust the properties of items in the ElectronHostHook folder (if present) -->
 
   <ItemGroup>
@@ -582,6 +585,15 @@ For more information, see: https://github.com/ElectronNET/Electron.NET/wiki/Migr
 
     <Message Importance="High" Text="ElectronPublishApp: ElectronPublishDirFullPath - $(ElectronPublishDirFullPath)" />
     <Message Importance="High" Text="ElectronPublishApp: ElectronAppDirFullPath - $(ElectronAppDirFullPath)" />
+
+    <!-- The shipped ElectronHostHook/package.json still carries its devDependencies (typescript),
+         copied verbatim from source. They serve no purpose past this point: the hook's TypeScript
+         is already compiled to JS by build time. Left in place, npm's dev omitting "list" command
+         (run by electron-builder's dependency collector against this file: linked package) reports
+         them as "missing" due to a long-standing npm quirk for linked packages (npm/npm#17624),
+         which electron-builder logs but does not fail on. Stripping the field here avoids the
+         false warning entirely instead of relying on that tolerance. -->
+    <RemoveJsonPropertyTask File="$(ElectronAppDirFullPath)ElectronHostHook\package.json" PropertyName="devDependencies" />
 
     <!-- Install the app's runtime (prod) dependencies into app\node_modules so they end up
          inside app.asar. devDependencies (electron, eslint, typescript) are not needed here:
