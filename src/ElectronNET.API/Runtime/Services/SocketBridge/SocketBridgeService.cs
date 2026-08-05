@@ -16,10 +16,15 @@
         {
             this.socketPort = socketPort;
             this.authorization = authorization;
-            this.socketUrl = $"http://localhost:{this.socketPort}";
+            // IPv4 loopback literal, never a name: "localhost" resolves to ::1 first on
+            // Windows, and the Electron host binds the IPv4 loopback. Each attempt on the
+            // wrong family costs a TCP retransmit timeout before falling back.
+            this.socketUrl = $"http://127.0.0.1:{this.socketPort}";
         }
 
         public int SocketPort => this.socketPort;
+
+        internal string SocketUrl => this.socketUrl;
 
         internal SocketIOConnection Socket => this.socket;
 
