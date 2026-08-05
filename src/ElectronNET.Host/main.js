@@ -264,7 +264,10 @@ function startSocketApiBridge(port) {
     // otherwise the Windows Firewall will be triggered
     console.debug('Electron Socket: starting...');
     server = createServer();
-    const host = !port ? '127.0.0.1' : 'localhost';
+    // IPv4 loopback literal, unconditionally: the .NET client connects to the same
+    // literal, and binding a name here made the address family depend on whether the
+    // port was forced ('localhost' binds ::1 on Windows), so the two ends disagreed.
+    const host = '127.0.0.1';
     let hostHook;
     io = new Server({
         pingTimeout: 60000, // in ms, default is 5000
