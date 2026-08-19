@@ -4,6 +4,7 @@ namespace ElectronNET.API;
 
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using ElectronNET.API.Serialization;
 using SocketIO.Serializer.SystemTextJson;
@@ -18,13 +19,24 @@ internal class SocketIOConnection : ISocketConnection
 
     public SocketIOConnection(string uri, string authorization)
     {
-        var opts = string.IsNullOrEmpty(authorization) ? new SocketIOOptions() : new SocketIOOptions
+        var opts = new SocketIOOptions
         {
-            ExtraHeaders = new Dictionary<string, string>
+            // The bridge is a loopback IPC channel, never real network traffic. Left
+            // unset, SocketIOClient falls back to HttpClient.DefaultProxy, which on
+            // Windows comes from the Internet Settings and only exempts 127.0.0.1 when
+            // the override list carries "<local>". Without that, the engine.io handshake
+            // is sent to the proxy and the connection never completes.
+            Proxy = DirectProxy.Instance,
+        };
+
+        if (!string.IsNullOrEmpty(authorization))
+        {
+            opts.ExtraHeaders = new Dictionary<string, string>
             {
                 ["authorization"] = authorization
-            },
-        };
+            };
+        }
+
         _socket = new SocketIO(uri, opts);
         _socket.Serializer = new SystemTextJsonSerializer(ElectronJson.Options);
         // Use default System.Text.Json serializer from SocketIOClient.
@@ -150,6 +162,27 @@ internal class SocketIOConnection : ISocketConnection
         if (this._isDisposed)
         {
             throw new ObjectDisposedException(nameof(SocketIOConnection));
+        }
+    }
+
+    /// <summary>
+    /// Proxy that bypasses every destination, forcing a direct connection. Applied to
+    /// both transports of the bridge: the polling handshake and the websocket upgrade.
+    /// </summary>
+    private sealed class DirectProxy : IWebProxy
+    {
+        public static readonly DirectProxy Instance = new DirectProxy();
+
+        public ICredentials Credentials { get; set; }
+
+        public Uri GetProxy(Uri destination)
+        {
+            return destination;
+        }
+
+        public bool IsBypassed(Uri host)
+        {
+            return true;
         }
     }
 }
